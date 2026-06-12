@@ -74,55 +74,65 @@ class ReminderListTest {
 @DisplayName("name, color, icon을 전달하면 모든 필드가 올바르게 설정된다")
 void createWithAllFields() { ... }
 ```
-
 ---
 
-## 엔티티 설계
+## Service 설계
 
-### 생성 방식
+### 트랜잭션
 
-- `@Builder`를 외부에 노출하지 않고 **정적 팩토리 메서드 `create()`** 를 사용한다
-- 생성 시 필요한 비즈니스 로직(날짜 설정 등)을 `create()` 안에서 처리한다
-- 기본 생성자는 `@NoArgsConstructor(access = AccessLevel.PROTECTED)`로 JPA 전용으로만 허용한다
-
-```java
-// ✅ 올바른 예
-public static ReminderList create(String name, ListColor color, String icon) {
-    return new ReminderList(name, color, icon); // 생성자 내부에서 날짜 설정
-}
-
-// ❌ 잘못된 예
-ReminderList.builder().name("개인").color(BLUE).build(); // 외부에서 builder 직접 사용
-```
-
-### 날짜 자동 등록
-
-- `@CreationTimestamp`, `@UpdateTimestamp` 같은 Hibernate 어노테이션을 사용하지 않는다
-- `@PrePersist` / `@PreUpdate` 도 사용하지 않는다
-- **생성 로직(`create()`)과 수정 로직(`update()`) 내부**에서 직접 `LocalDateTime.now()`로 설정한다
-- 이렇게 하면 JPA 없이도 단위 테스트에서 검증 가능하다
+- 클래스 레벨에 `@Transactional(readOnly = true)`를 선언한다
+- 데이터를 변경하는 메서드(create, update, delete)에만 `@Transactional`을 추가로 선언한다
 
 ```java
 // ✅ 올바른 예
-private ReminderList(String name, ListColor color, String icon) {
-    this.name = name;
-    this.color = color;
-    this.icon = icon;
-    this.createdAt = LocalDateTime.now();
-    this.updatedAt = LocalDateTime.now();
-}
+@Service
+@Transactional(readOnly = true)
+public class ReminderListService {
 
-public void update(String name, ListColor color, String icon) {
-    if (name != null) this.name = name;
-    if (color != null) this.color = color;
-    if (icon != null) this.icon = icon;
-    this.updatedAt = LocalDateTime.now();
+    public List<ReminderListResponse> findAll() { ... }   // readOnly 상속
+
+    @Transactional
+    public ReminderListResponse create(...) { ... }       // 쓰기 트랜잭션
+
+    @Transactional
+    public void delete(...) { ... }
 }
 ```
 
-### 수정 메서드
+### 예외 처리
 
-- 수정 메서드는 null-safe하게 작성한다 — null이 전달된 필드는 변경하지 않는다
+- 존재하지 않는 id 조회는 `NotFoundException`을 던진다
+- Repository 조회 로직은 `findById()` private 메서드로 추출해 중복을 제거한다
+
+```java
+// ✅ 올바른 예
+private ReminderList findById(Long id) {
+    return reminderListRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("목록을 찾을 수 없습니다. id=" + id));
+}
+```
+
+### Service 테스트
+
+- `@SpringBootTest` + `@Transactional`로 작성한다
+- Mock을 사용하지 않고 실제 빈과 H2 인메모리 DB를 사용한다
+- `@Transactional`로 각 테스트가 독립적으로 롤백된다
+
+```java
+// ✅ 올바른 예
+@SpringBootTest
+@Transactional
+class ReminderListServiceTest {
+
+    @Autowired
+    private ReminderListService reminderListService;
+
+    @Test
+    void 저장된_목록이_없으면_빈_리스트를_반환한다() {
+        assertThat(reminderListService.findAll()).isEmpty();
+    }
+}
+```
 
 ---
 
