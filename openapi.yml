@@ -1,0 +1,208 @@
+openapi: 3.0.3
+info:
+  title: JihyunReminder API
+  description: Apple Reminder 웹 버전 REST API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: 로컬 개발 서버
+
+tags:
+  - name: ReminderList
+    description: 리마인더 목록 관리
+
+paths:
+  /api/lists:
+    get:
+      tags:
+        - ReminderList
+      summary: 전체 목록 조회
+      operationId: getAllLists
+      responses:
+        '200':
+          description: 조회 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReminderListResponse'
+              example:
+                - id: 1
+                  name: 개인
+                  color: BLUE
+                  icon: 🏠
+                  createdAt: 2026-06-12T00:00:00
+
+    post:
+      tags:
+        - ReminderList
+      summary: 목록 생성
+      operationId: createList
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReminderListRequest'
+            example:
+              name: 개인
+              color: BLUE
+              icon: 🏠
+      responses:
+        '201':
+          description: 생성 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReminderListResponse'
+        '400':
+          description: 유효하지 않은 요청 (name 누락 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: 목록 이름은 필수입니다
+
+  /api/lists/{id}:
+    patch:
+      tags:
+        - ReminderList
+      summary: 목록 수정
+      operationId: updateList
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReminderListUpdateRequest'
+            example:
+              name: 업무
+              color: RED
+              icon: 💼
+      responses:
+        '200':
+          description: 수정 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReminderListResponse'
+        '404':
+          description: 목록 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: 목록을 찾을 수 없습니다. id=1
+
+    delete:
+      tags:
+        - ReminderList
+      summary: 목록 삭제
+      operationId: deleteList
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '204':
+          description: 삭제 성공
+        '404':
+          description: 목록 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: 목록을 찾을 수 없습니다. id=1
+
+components:
+  schemas:
+    ListColor:
+      type: string
+      enum:
+        - RED
+        - ORANGE
+        - YELLOW
+        - GREEN
+        - TEAL
+        - BLUE
+        - INDIGO
+        - PURPLE
+        - PINK
+        - BROWN
+      example: BLUE
+
+    ReminderListRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          description: 목록 이름 (필수)
+          example: 개인
+        color:
+          $ref: '#/components/schemas/ListColor'
+        icon:
+          type: string
+          description: 이모지 아이콘 (선택)
+          example: 🏠
+
+    ReminderListUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          description: 목록 이름 (선택 - null이면 기존 값 유지)
+          example: 업무
+        color:
+          $ref: '#/components/schemas/ListColor'
+        icon:
+          type: string
+          description: 이모지 아이콘 (선택 - null이면 기존 값 유지)
+          example: 💼
+
+    ReminderListResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: 개인
+        color:
+          $ref: '#/components/schemas/ListColor'
+        icon:
+          type: string
+          example: 🏠
+        createdAt:
+          type: string
+          format: date-time
+          example: 2026-06-12T00:00:00
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: 목록을 찾을 수 없습니다. id=1
