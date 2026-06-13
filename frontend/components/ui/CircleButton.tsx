@@ -27,7 +27,7 @@ export default function CircleButton({
       }}
     >
       {checked ? (
-        /* 완료 체크마크 */
+        /* 완료 체크마크 — stroke-dashoffset 드로우 애니메이션 */
         <svg
           width={size * 0.55}
           height={size * 0.55}
@@ -42,7 +42,9 @@ export default function CircleButton({
             strokeLinejoin="round"
             strokeDasharray="14"
             strokeDashoffset="0"
-            style={{ transition: 'stroke-dashoffset 150ms ease' }}
+            style={{
+              animation: 'check-draw 200ms ease-out forwards',
+            }}
           />
         </svg>
       ) : (

@@ -367,48 +367,48 @@
 ## Phase 9 — FE: 검색·키보드·낙관적 업데이트·애니메이션
 
 ### 검색
-- [ ] `components/sidebar/SearchBar.tsx` 컴포넌트
-  - [ ] `debounce` 300ms 적용
-  - [ ] 검색 중 스피너 표시
-  - [ ] 빈 검색어 → 원래 뷰 복귀
-- [ ] 검색 결과 키워드 하이라이트 (`<mark>` 또는 `font-bold`)
-- [ ] `Sidebar.tsx` 상단에 `SearchBar` 배치
+- [x] `components/sidebar/SearchBar.tsx` 컴포넌트
+  - [x] `debounce` 300ms 적용
+  - [x] 검색 중 스피너 표시
+  - [x] 빈 검색어 → 원래 뷰 복귀
+- [x] 검색 결과 키워드 하이라이트 (`<mark>` 또는 `font-bold`)
+- [x] `Sidebar.tsx` 상단에 `SearchBar` 배치
 
 ### 낙관적 업데이트
-- [ ] `useToggleComplete()` — `onMutate`로 UI 선반영, `onError`로 롤백
-- [ ] `useToggleFlag()` — 동일하게 낙관적 업데이트 적용
-- [ ] `useCreateReminder()` — 임시 id로 목록에 즉시 추가
-- [ ] `useDeleteReminder()` — 즉시 목록에서 제거 후 서버 확인
+- [x] `useToggleComplete()` — `onMutate`로 UI 선반영, `onError`로 롤백
+- [x] `useToggleFlag()` — 동일하게 낙관적 업데이트 적용
+- [x] `useCreateReminder()` — 임시 id로 목록에 즉시 추가
+- [x] `useDeleteReminder()` — 즉시 목록에서 제거 후 서버 확인
 
 ### 키보드 단축키
-- [ ] `hooks/useKeyboard.ts` 생성
-  - [ ] `Cmd/Ctrl + F` → 검색창 포커스
-  - [ ] `Cmd/Ctrl + I` → 상세 패널 토글
-  - [ ] `Escape` → 상세 패널 닫기 / 인라인 편집 취소
-  - [ ] `Enter` → 다음 리마인더 입력 활성화
-  - [ ] `Tab` → 하위 태스크 변환 (인라인 입력 중)
-  - [ ] `Shift+Tab` → 하위 태스크 → 일반 리마인더로 내보내기
-  - [ ] `Space` → 선택된 리마인더 완료 토글
-  - [ ] `Cmd/Ctrl + Backspace` → 리마인더 삭제
-- [ ] `app/layout.tsx`에 `useKeyboard()` 훅 마운트
+- [x] `hooks/useKeyboard.ts` 생성
+  - [x] `Cmd/Ctrl + F` → 검색창 포커스
+  - [x] `Cmd/Ctrl + I` → 상세 패널 토글
+  - [x] `Escape` → 상세 패널 닫기 / 인라인 편집 취소
+  - [x] `Enter` → 다음 리마인더 입력 활성화
+  - [x] `Tab` → 하위 태스크 변환 (인라인 입력 중)
+  - [x] `Shift+Tab` → 하위 태스크 → 일반 리마인더로 내보내기
+  - [x] `Space` → 선택된 리마인더 완료 토글
+  - [x] `Cmd/Ctrl + Backspace` → 리마인더 삭제
+- [x] `app/layout.tsx`에 `useKeyboard()` 훅 마운트
 
 ### 애니메이션 완성
-- [ ] `SmartListCard` — `hover:scale-[1.02] transition-transform duration-150`
-- [ ] `ListItem` 선택 — `transition-colors duration-100`
-- [ ] `ReminderRow` 추가 — `animate-slide-down`
-- [ ] `ReminderRow` 완료/삭제 — `animate-fade-out` (opacity 0 + height collapse)
-- [ ] `CircleButton` 체크마크 — SVG `stroke-dashoffset` 드로우 애니메이션
+- [x] `SmartListCard` — `hover:scale-[1.02] transition-transform duration-150`
+- [x] `ListItem` 선택 — `transition-colors duration-100`
+- [x] `ReminderRow` 추가 — `animate-slide-down`
+- [x] `ReminderRow` 완료/삭제 — `animate-fade-out` (opacity 0 + height collapse)
+- [x] `CircleButton` 체크마크 — SVG `stroke-dashoffset` 드로우 애니메이션
 
 ### 반응형 (768px~1279px Tablet)
-- [ ] 사이드바 숨김 처리 (`hidden md:block`)
-- [ ] 상단 햄버거 버튼 → Drawer 컴포넌트 (사이드바 오버레이)
-- [ ] 상세 패널 → 전체 화면 오버레이 모달로 전환
+- [x] 사이드바 숨김 처리 (`hidden md:block`)
+- [x] 상단 햄버거 버튼 → Drawer 컴포넌트 (사이드바 오버레이)
+- [x] 상세 패널 → 전체 화면 오버레이 모달로 전환
 
 ### 마무리
-- [ ] API 에러 시 토스트 알림 컴포넌트
-- [ ] 데이터 로딩 중 스켈레톤 UI (리마인더 목록, 사이드바)
-- [ ] `frontend` 폴더 `.gitignore` 정비 (`.env.local`, `node_modules` 등)
-- [ ] `README.md` 실행 방법 업데이트 (BE + FE 동시 실행)
+- [x] API 에러 시 토스트 알림 컴포넌트
+- [x] 데이터 로딩 중 스켈레톤 UI (리마인더 목록, 사이드바)
+- [x] `frontend` 폴더 `.gitignore` 정비 (`.env.local`, `node_modules` 등)
+- [x] `README.md` 실행 방법 업데이트 (BE + FE 동시 실행)
 
 ---
 
@@ -424,4 +424,4 @@
 | **Phase 6** | FE: 사이드바 API 연동 | ✅ 완료 |
 | **Phase 7** | FE: 리마인더 기본 | ✅ 완료 |
 | **Phase 8** | FE: 상세 패널·하위 태스크·스마트 목록 | ✅ 완료 |
-| **Phase 9** | FE: 검색·키보드·낙관적 업데이트·애니메이션 | ⬜ 미착수 |
+| **Phase 9** | FE: 검색·키보드·낙관적 업데이트·애니메이션 | ✅ 완료 |

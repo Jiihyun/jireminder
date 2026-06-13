@@ -68,6 +68,15 @@
   }
 }
 
+@keyframes check-draw {
+  from {
+    stroke-dashoffset: 14;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 /* 전역 기본 스타일 */
 * {
   box-sizing: border-box;
