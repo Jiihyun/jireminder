@@ -11,6 +11,8 @@ servers:
 tags:
   - name: ReminderList
     description: 리마인더 목록 관리
+  - name: Reminder
+    description: 리마인더 관리
 
 paths:
   /api/lists:
@@ -131,6 +133,172 @@ paths:
               example:
                 message: 목록을 찾을 수 없습니다. id=1
 
+  /api/reminders:
+    get:
+      tags:
+        - Reminder
+      summary: 목록별 리마인더 조회
+      operationId: getRemindersByListId
+      parameters:
+        - name: listId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '200':
+          description: 조회 성공 (미완료/완료 분리)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReminderGroupResponse'
+
+    post:
+      tags:
+        - Reminder
+      summary: 리마인더 생성
+      operationId: createReminder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReminderCreateRequest'
+            example:
+              listId: 1
+              title: 장보기
+              memo: 우유, 달걀
+      responses:
+        '201':
+          description: 생성 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReminderResponse'
+        '400':
+          description: 유효하지 않은 요청
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: 목록 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/reminders/{id}:
+    patch:
+      tags:
+        - Reminder
+      summary: 리마인더 수정
+      operationId: updateReminder
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReminderUpdateRequest'
+      responses:
+        '200':
+          description: 수정 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReminderResponse'
+        '404':
+          description: 리마인더 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - Reminder
+      summary: 리마인더 삭제
+      operationId: deleteReminder
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: 삭제 성공
+        '404':
+          description: 리마인더 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/reminders/{id}/complete:
+    patch:
+      tags:
+        - Reminder
+      summary: 리마인더 완료 토글
+      operationId: toggleReminderComplete
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 토글 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReminderResponse'
+        '404':
+          description: 리마인더 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/reminders/{id}/flag:
+    patch:
+      tags:
+        - Reminder
+      summary: 리마인더 플래그 토글
+      operationId: toggleReminderFlag
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 토글 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReminderResponse'
+        '404':
+          description: 리마인더 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
 components:
   schemas:
     ListColor:
@@ -199,6 +367,132 @@ components:
           type: string
           format: date-time
           example: 2026-06-12T00:00:00
+
+    Priority:
+      type: string
+      enum:
+        - NONE
+        - LOW
+        - MEDIUM
+        - HIGH
+      example: NONE
+
+    ReminderCreateRequest:
+      type: object
+      required:
+        - listId
+        - title
+      properties:
+        listId:
+          type: integer
+          format: int64
+          example: 1
+        title:
+          type: string
+          maxLength: 200
+          example: 장보기
+        memo:
+          type: string
+          example: 우유, 달걀
+
+    ReminderUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 200
+          example: 장보기
+        memo:
+          type: string
+          example: 우유, 달걀
+        priority:
+          $ref: '#/components/schemas/Priority'
+        dueDate:
+          type: string
+          format: date
+          example: 2026-07-01
+        dueTime:
+          type: string
+          format: time
+          example: 09:00:00
+
+    SubTaskResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        reminderId:
+          type: integer
+          format: int64
+          example: 1
+        title:
+          type: string
+          example: 우유 사기
+        completed:
+          type: boolean
+          example: false
+        createdAt:
+          type: string
+          format: date-time
+
+    ReminderResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        listId:
+          type: integer
+          format: int64
+          example: 1
+        title:
+          type: string
+          example: 장보기
+        memo:
+          type: string
+          example: 우유, 달걀
+        completed:
+          type: boolean
+          example: false
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+        flagged:
+          type: boolean
+          example: false
+        priority:
+          $ref: '#/components/schemas/Priority'
+        dueDate:
+          type: string
+          format: date
+          nullable: true
+        dueTime:
+          type: string
+          format: time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        subTasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubTaskResponse'
+
+    ReminderGroupResponse:
+      type: object
+      properties:
+        incomplete:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReminderResponse'
+        completed:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReminderResponse'
 
     ErrorResponse:
       type: object

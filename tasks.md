@@ -9,117 +9,117 @@
 ## Phase 1 — BE: 목록(List) CRUD API
 
 ### 공통 기반
-- [ ] `dto/request/`, `dto/response/` 패키지 디렉토리 생성
-- [ ] `NotFoundException` 커스텀 예외 클래스 생성 (`404`)
-- [ ] `GlobalExceptionHandler` (`@RestControllerAdvice`) 생성
-  - [ ] `NotFoundException` → `404` 응답 처리
-  - [ ] `MethodArgumentNotValidException` → `400` 응답 처리
+- [x] `dto/request/`, `dto/response/` 패키지 디렉토리 생성
+- [x] `NotFoundException` 커스텀 예외 클래스 생성 (`404`)
+- [x] `GlobalExceptionHandler` (`@RestControllerAdvice`) 생성
+  - [x] `NotFoundException` → `404` 응답 처리
+  - [x] `MethodArgumentNotValidException` → `400` 응답 처리
 
 ### 도메인
-- [ ] `ListColor` Enum 생성
-  - [ ] 값: `RED, ORANGE, YELLOW, GREEN, TEAL, BLUE, INDIGO, PURPLE, PINK, BROWN`
-- [ ] `ReminderList` 엔티티 생성
-  - [ ] `@Entity`, `@Table(name = "reminder_list")`
-  - [ ] `id` — `@Id @GeneratedValue(IDENTITY)`
-  - [ ] `name` — `@Column(nullable = false, length = 50)`
-  - [ ] `color` — `@Enumerated(EnumType.STRING)`
-  - [ ] `icon` — `String` (이모지)
-  - [ ] `createdAt`, `updatedAt` — `@CreationTimestamp`, `@UpdateTimestamp`
-  - [ ] Lombok: `@Getter @Builder @NoArgsConstructor @AllArgsConstructor`
+- [x] `ListColor` Enum 생성
+  - [x] 값: `RED, ORANGE, YELLOW, GREEN, TEAL, BLUE, INDIGO, PURPLE, PINK, BROWN`
+- [x] `ReminderList` 엔티티 생성
+  - [x] `@Entity`, `@Table(name = "reminder_list")`
+  - [x] `id` — `@Id @GeneratedValue(IDENTITY)`
+  - [x] `name` — `@Column(nullable = false, length = 50)`
+  - [x] `color` — `@Enumerated(EnumType.STRING)`
+  - [x] `icon` — `String` (이모지)
+  - [x] `createdAt`, `updatedAt` — 생성/수정 로직에서 직접 설정
+  - [x] Lombok: `@Getter @NoArgsConstructor(PROTECTED)`
 
 ### Repository
-- [ ] `ReminderListRepository` 생성 (`JpaRepository<ReminderList, Long>`)
+- [x] `ReminderListRepository` 생성 (`JpaRepository<ReminderList, Long>`)
 
 ### DTO
-- [ ] `ReminderListRequest` 생성 (`name`, `color`, `icon`, `@NotBlank` 검증)
-- [ ] `ReminderListResponse` 생성 (`id`, `name`, `color`, `icon`, `createdAt`)
-  - [ ] 정적 팩토리 메서드 `from(ReminderList)` 추가
+- [x] `ReminderListRequest` 생성 (`name`, `color`, `icon`, `@NotBlank` 검증)
+- [x] `ReminderListResponse` 생성 (`id`, `name`, `color`, `icon`, `createdAt`)
+  - [x] 정적 팩토리 메서드 `from(ReminderList)` 추가
 
 ### Service
-- [ ] `ReminderListService` 생성
-  - [ ] `findAll()` — 전체 목록 조회
-  - [ ] `create(ReminderListRequest)` — 생성
-  - [ ] `update(Long id, ReminderListRequest)` — 수정 (존재하지 않으면 예외)
-  - [ ] `delete(Long id)` — 삭제 (존재하지 않으면 예외)
+- [x] `ReminderListService` 생성
+  - [x] `findAll()` — 전체 목록 조회
+  - [x] `create(ReminderListRequest)` — 생성
+  - [x] `update(Long id, ReminderListRequest)` — 수정 (존재하지 않으면 예외)
+  - [x] `delete(Long id)` — 삭제 (존재하지 않으면 예외)
 
 ### Controller
-- [ ] `ReminderListController` 생성 (`@RestController`, `@RequestMapping("/api/lists")`)
-  - [ ] `GET /api/lists` → `findAll()`
-  - [ ] `POST /api/lists` → `create()` (`201 Created`)
-  - [ ] `PATCH /api/lists/{id}` → `update()`
-  - [ ] `DELETE /api/lists/{id}` → `delete()` (`204 No Content`)
+- [x] `ReminderListController` 생성 (`@RestController`, `@RequestMapping("/api/lists")`)
+  - [x] `GET /api/lists` → `findAll()`
+  - [x] `POST /api/lists` → `create()` (`201 Created`)
+  - [x] `PATCH /api/lists/{id}` → `update()`
+  - [x] `DELETE /api/lists/{id}` → `delete()` (`204 No Content`)
 
 ### 테스트
-- [ ] `ReminderListServiceTest` 단위 테스트
-  - [ ] 목록 생성 성공
-  - [ ] 존재하지 않는 id 수정 시 예외
-  - [ ] 존재하지 않는 id 삭제 시 예외
-- [ ] `ReminderListControllerTest` (`@WebMvcTest`) 슬라이스 테스트
-  - [ ] `GET /api/lists` — 200 OK, 빈 배열
-  - [ ] `POST /api/lists` — 201, id 포함 응답
-  - [ ] `PATCH /api/lists/{id}` — 200, 변경값 반영
-  - [ ] `DELETE /api/lists/{id}` — 204
-  - [ ] `DELETE /api/lists/999` — 404
+- [x] `ReminderListServiceTest` 단위 테스트
+  - [x] 목록 생성 성공
+  - [x] 존재하지 않는 id 수정 시 예외
+  - [x] 존재하지 않는 id 삭제 시 예외
+- [x] `ReminderListControllerTest` (RestAssured) 통합 테스트
+  - [x] `GET /api/lists` — 200 OK, 빈 배열
+  - [x] `POST /api/lists` — 201, id 포함 응답
+  - [x] `PATCH /api/lists/{id}` — 200, 변경값 반영
+  - [x] `DELETE /api/lists/{id}` — 204
+  - [x] `DELETE /api/lists/999` — 404
 
 ---
 
 ## Phase 2 — BE: 리마인더 기본 API
 
 ### 도메인
-- [ ] `Reminder` 엔티티 생성
-  - [ ] `id` — `@Id @GeneratedValue(IDENTITY)`
-  - [ ] `reminderList` — `@ManyToOne(fetch = LAZY)`, `@JoinColumn(name = "list_id")`
-  - [ ] `title` — `@Column(nullable = false, length = 200)`
-  - [ ] `memo` — `@Column(length = 1000)`
-  - [ ] `completed` — `boolean`, 기본값 `false`
-  - [ ] `completedAt` — `LocalDateTime`
-  - [ ] `flagged` — `boolean`, 기본값 `false`
-  - [ ] `createdAt`, `updatedAt` — `@CreationTimestamp`, `@UpdateTimestamp`
-  - [ ] Lombok: `@Getter @Builder @NoArgsConstructor @AllArgsConstructor`
-- [ ] `ReminderList` 엔티티에 `@OneToMany(cascade = ALL, orphanRemoval = true)` 추가
+- [x] `Reminder` 엔티티 생성
+  - [x] `id` — `@Id @GeneratedValue(IDENTITY)`
+  - [x] `reminderList` — `@ManyToOne(fetch = LAZY)`, `@JoinColumn(name = "list_id")`
+  - [x] `title` — `@Column(nullable = false, length = 200)`
+  - [x] `memo` — `@Column(length = 1000)`
+  - [x] `completed` — `boolean`, 기본값 `false`
+  - [x] `completedAt` — `LocalDateTime`
+  - [x] `flagged` — `boolean`, 기본값 `false`
+  - [x] `createdAt`, `updatedAt` — 생성/수정 로직에서 직접 설정
+  - [x] Lombok: `@Getter @NoArgsConstructor(PROTECTED)`
+- [x] `ReminderList` 엔티티에 `@OneToMany(cascade = ALL, orphanRemoval = true)` 추가
 
 ### Repository
-- [ ] `ReminderRepository` 생성
-  - [ ] `findByReminderListIdAndCompletedFalseOrderByCreatedAtAsc(Long listId)`
-  - [ ] `findByReminderListIdAndCompletedTrueOrderByCompletedAtDesc(Long listId)`
+- [x] `ReminderRepository` 생성
+  - [x] `findByReminderListIdAndCompletedFalseOrderByCreatedAtAsc(Long listId)`
+  - [x] `findByReminderListIdAndCompletedTrueOrderByCompletedAtDesc(Long listId)`
 
 ### DTO
-- [ ] `ReminderCreateRequest` 생성 (`listId`, `title`, `memo?`, `@NotBlank` 검증)
-- [ ] `ReminderUpdateRequest` 생성 (`title?`, `memo?`)
-- [ ] `ReminderResponse` 생성
-  - [ ] `id`, `listId`, `title`, `memo`, `completed`, `completedAt`, `flagged`, `createdAt`
-  - [ ] 정적 팩토리 메서드 `from(Reminder)` 추가
+- [x] `ReminderCreateRequest` 생성 (`listId`, `title`, `memo?`, `@NotBlank` 검증)
+- [x] `ReminderUpdateRequest` 생성 (`title?`, `memo?`)
+- [x] `ReminderResponse` 생성
+  - [x] `id`, `listId`, `title`, `memo`, `completed`, `completedAt`, `flagged`, `createdAt`
+  - [x] 정적 팩토리 메서드 `from(Reminder)` 추가
 
 ### Service
-- [ ] `ReminderService` 생성
-  - [ ] `findByListId(Long listId)` — 미완료/완료 분리 응답
-  - [ ] `create(ReminderCreateRequest)` — 생성 (listId 유효성 확인)
-  - [ ] `update(Long id, ReminderUpdateRequest)` — 제목·메모 수정
-  - [ ] `toggleComplete(Long id)` — `completed` 반전, `completedAt` 자동 기록/초기화
-  - [ ] `toggleFlag(Long id)` — `flagged` 반전
-  - [ ] `delete(Long id)` — 삭제
+- [x] `ReminderService` 생성
+  - [x] `findByListId(Long listId)` — 미완료/완료 분리 응답
+  - [x] `create(ReminderCreateRequest)` — 생성 (listId 유효성 확인)
+  - [x] `update(Long id, ReminderUpdateRequest)` — 제목·메모 수정
+  - [x] `toggleComplete(Long id)` — `completed` 반전, `completedAt` 자동 기록/초기화
+  - [x] `toggleFlag(Long id)` — `flagged` 반전
+  - [x] `delete(Long id)` — 삭제
 
 ### Controller
-- [ ] `ReminderController` 생성 (`@RequestMapping("/api/reminders")`)
-  - [ ] `GET /api/reminders?listId={id}` → `findByListId()`
-  - [ ] `POST /api/reminders` → `create()` (`201`)
-  - [ ] `PATCH /api/reminders/{id}` → `update()`
-  - [ ] `PATCH /api/reminders/{id}/complete` → `toggleComplete()`
-  - [ ] `PATCH /api/reminders/{id}/flag` → `toggleFlag()`
-  - [ ] `DELETE /api/reminders/{id}` → `delete()` (`204`)
+- [x] `ReminderController` 생성 (`@RequestMapping("/api/reminders")`)
+  - [x] `GET /api/reminders?listId={id}` → `findByListId()`
+  - [x] `POST /api/reminders` → `create()` (`201`)
+  - [x] `PATCH /api/reminders/{id}` → `update()`
+  - [x] `PATCH /api/reminders/{id}/complete` → `toggleComplete()`
+  - [x] `PATCH /api/reminders/{id}/flag` → `toggleFlag()`
+  - [x] `DELETE /api/reminders/{id}` → `delete()` (`204`)
 
 ### 테스트
-- [ ] `ReminderServiceTest` 단위 테스트
-  - [ ] 리마인더 생성 성공
-  - [ ] 완료 토글: `completedAt` 기록
-  - [ ] 완료 → 미완료 토글: `completedAt` null 초기화
-  - [ ] 플래그 토글
-- [ ] `ReminderControllerTest` 슬라이스 테스트
-  - [ ] 목록별 조회
-  - [ ] 생성 → 201
-  - [ ] 완료 토글
-  - [ ] 플래그 토글
-  - [ ] 삭제 → 204
+- [x] `ReminderServiceTest` 단위 테스트
+  - [x] 리마인더 생성 성공
+  - [x] 완료 토글: `completedAt` 기록
+  - [x] 완료 → 미완료 토글: `completedAt` null 초기화
+  - [x] 플래그 토글
+- [x] `ReminderControllerTest` 슬라이스 테스트
+  - [x] 목록별 조회
+  - [x] 생성 → 201
+  - [x] 완료 토글
+  - [x] 플래그 토글
+  - [x] 삭제 → 204
 
 ---
 
