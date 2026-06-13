@@ -246,42 +246,42 @@
 ## Phase 6 — FE: 사이드바 API 연동 (목록 CRUD)
 
 ### API 클라이언트
-- [ ] `lib/api.ts` — fetch 래퍼 (`apiFetch<T>`) 구현
-  - [ ] `BASE_URL` 환경변수 적용
-  - [ ] Content-Type 헤더 기본 설정
-  - [ ] HTTP 에러 시 throw
-- [ ] `lib/queryClient.ts` — TanStack Query 클라이언트 싱글톤 생성
-- [ ] `app/layout.tsx`에 `QueryClientProvider` 래핑 (+ ReactQueryDevtools)
+- [x] `lib/api.ts` — fetch 래퍼 (`apiFetch<T>`) 구현
+  - [x] `BASE_URL` 환경변수 적용
+  - [x] Content-Type 헤더 기본 설정
+  - [x] HTTP 에러 시 throw
+- [x] `lib/queryClient.ts` — TanStack Query 클라이언트 싱글톤 생성
+- [x] `app/layout.tsx`에 `QueryClientProvider` 래핑 (+ ReactQueryDevtools)
 
 ### Zustand 스토어
-- [ ] `store/uiStore.ts` 생성
-  - [ ] `selectedListId: string | null` 상태
-  - [ ] `detailReminderId: number | null` 상태
-  - [ ] `setSelectedList(id)` 액션
-  - [ ] `openDetail(reminderId)`, `closeDetail()` 액션
+- [x] `store/uiStore.ts` 생성
+  - [x] `selectedListId: string | null` 상태
+  - [x] `detailReminderId: number | null` 상태
+  - [x] `setSelectedList(id)` 액션
+  - [x] `openDetail(reminderId)`, `closeDetail()` 액션
 
 ### 훅
-- [ ] `hooks/useLists.ts`
-  - [ ] `useLists()` — `GET /api/lists`
-  - [ ] `useCreateList()` — `POST /api/lists` (성공 시 `['lists']` invalidate)
-  - [ ] `useUpdateList()` — `PATCH /api/lists/{id}`
-  - [ ] `useDeleteList()` — `DELETE /api/lists/{id}`
-- [ ] `hooks/useSmartCounts.ts` — `GET /api/smart-counts`
+- [x] `hooks/useLists.ts`
+  - [x] `useLists()` — `GET /api/lists`
+  - [x] `useCreateList()` — `POST /api/lists` (성공 시 `['lists']` invalidate)
+  - [x] `useUpdateList()` — `PATCH /api/lists/{id}`
+  - [x] `useDeleteList()` — `DELETE /api/lists/{id}`
+- [x] `hooks/useSmartCounts.ts` — `GET /api/smart-counts`
 
 ### UI 컴포넌트
-- [ ] `components/ui/ColorPicker.tsx` — 10가지 색상 원형 버튼 선택 UI
-- [ ] `components/sidebar/ListItem.tsx`
-  - [ ] 색상 원 + 목록명 + 미완료 개수 뱃지
-  - [ ] 선택 시 배경색 강조
-  - [ ] 우클릭 → 컨텍스트 메뉴 (이름 변경 / 삭제)
-- [ ] 목록 추가 모달 컴포넌트
-  - [ ] 이름 입력 (`input`)
-  - [ ] `ColorPicker` 색상 선택
-  - [ ] 확인 / 취소 버튼
-- [ ] `Sidebar.tsx` 실제 API 데이터로 교체
-  - [ ] 스마트 목록 카드 카운트: `useSmartCounts()` 연동
-  - [ ] 나의 목록: `useLists()` 연동
-  - [ ] `+ 목록 추가` 버튼 → 모달 오픈
+- [x] `components/ui/ColorPicker.tsx` — 10가지 색상 원형 버튼 선택 UI
+- [x] `components/sidebar/ListItem.tsx`
+  - [x] 색상 원 + 목록명 + 미완료 개수 뱃지
+  - [x] 선택 시 배경색 강조
+  - [x] 우클릭 → 컨텍스트 메뉴 (이름 변경 / 삭제)
+- [x] 목록 추가 모달 컴포넌트 (`AddListModal.tsx`)
+  - [x] 이름 입력 (`input`)
+  - [x] `ColorPicker` 색상 선택
+  - [x] 확인 / 취소 버튼
+- [x] `Sidebar.tsx` 실제 API 데이터로 교체
+  - [x] 스마트 목록 카드 카운트: `useSmartCounts()` 연동
+  - [x] 나의 목록: `useLists()` 연동
+  - [x] `+ 목록 추가` 버튼 → 모달 오픈
 
 ---
 

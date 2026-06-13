@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import Providers from './providers';
 import Sidebar from '@/components/sidebar/Sidebar';
 
 export const metadata: Metadata = {
@@ -15,15 +16,20 @@ export default function RootLayout({
   return (
     <html lang="ko" className="h-full">
       <body className="flex h-full antialiased">
-        {/* 사이드바 — 260px 고정 */}
-        <div className="w-[260px] flex-shrink-0 h-full border-r" style={{ borderColor: 'var(--separator)' }}>
-          <Sidebar />
-        </div>
+        <Providers>
+          {/* 사이드바 — 260px 고정 */}
+          <div
+            className="w-[260px] flex-shrink-0 h-full border-r"
+            style={{ borderColor: 'var(--separator)' }}
+          >
+            <Sidebar />
+          </div>
 
-        {/* 메인 컨텐츠 */}
-        <main className="flex-1 h-full overflow-auto">
-          {children}
-        </main>
+          {/* 메인 컨텐츠 */}
+          <main className="flex-1 h-full overflow-auto">
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );
