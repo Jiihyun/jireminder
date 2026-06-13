@@ -3,9 +3,14 @@ package jiihyun.ai.jihyunreminder.controller;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import jiihyun.ai.jihyunreminder.domain.ListColor;
+import jiihyun.ai.jihyunreminder.domain.Priority;
 import jiihyun.ai.jihyunreminder.dto.request.ReminderCreateRequest;
 import jiihyun.ai.jihyunreminder.dto.request.ReminderListRequest;
+import jiihyun.ai.jihyunreminder.dto.request.ReminderMoveRequest;
+import jiihyun.ai.jihyunreminder.dto.request.ReminderUpdateRequest;
 import jiihyun.ai.jihyunreminder.repository.ReminderListRepository;
+
+import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -163,6 +168,47 @@ class ReminderControllerTest {
             .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("flagged", equalTo(true));
+        }
+    }
+
+    @Nested
+    class PATCH_api_reminders_id {
+
+        @Test
+        void 마감일과_우선순위를_수정하면_변경값이_반영된다() {
+            long listId = 목록을_생성한다();
+            long reminderId = 리마인더를_생성한다(listId);
+            LocalDate dueDate = LocalDate.of(2026, 7, 1);
+
+            given()
+                .contentType(ContentType.JSON)
+                .body(new ReminderUpdateRequest(null, null, Priority.HIGH, dueDate, null))
+            .when()
+                .patch("/api/reminders/{id}", reminderId)
+            .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("priority", equalTo("HIGH"))
+                .body("dueDate", equalTo("2026-07-01"));
+        }
+    }
+
+    @Nested
+    class PATCH_api_reminders_id_move {
+
+        @Test
+        void 목록_이동하면_listId가_변경된다() {
+            long listId = 목록을_생성한다();
+            long targetListId = 목록을_생성한다();
+            long reminderId = 리마인더를_생성한다(listId);
+
+            given()
+                .contentType(ContentType.JSON)
+                .body(new ReminderMoveRequest(targetListId))
+            .when()
+                .patch("/api/reminders/{id}/move", reminderId)
+            .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("listId", equalTo((int) targetListId));
         }
     }
 

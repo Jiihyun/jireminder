@@ -1,13 +1,18 @@
 package jiihyun.ai.jihyunreminder.service;
 
 import jiihyun.ai.jihyunreminder.domain.ListColor;
+import jiihyun.ai.jihyunreminder.domain.Priority;
 import jiihyun.ai.jihyunreminder.domain.ReminderList;
 import jiihyun.ai.jihyunreminder.dto.request.ReminderCreateRequest;
+import jiihyun.ai.jihyunreminder.dto.request.ReminderMoveRequest;
 import jiihyun.ai.jihyunreminder.dto.request.ReminderUpdateRequest;
 import jiihyun.ai.jihyunreminder.dto.response.ReminderGroupResponse;
 import jiihyun.ai.jihyunreminder.dto.response.ReminderResponse;
 import jiihyun.ai.jihyunreminder.exception.NotFoundException;
 import jiihyun.ai.jihyunreminder.repository.ReminderListRepository;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -145,6 +150,76 @@ class ReminderServiceTest {
                     new ReminderUpdateRequest("새 제목", null, null, null, null));
 
             assertThat(updated.title()).isEqualTo("새 제목");
+        }
+    }
+
+    @Nested
+    class update_dueDate_priority {
+
+        @Test
+        void 마감일만_설정하면_dueDate가_저장된다() {
+            ReminderResponse created = reminderService.create(new ReminderCreateRequest(savedListId, "리마인더", null));
+            LocalDate date = LocalDate.of(2026, 7, 1);
+
+            ReminderResponse updated = reminderService.update(created.id(),
+                    new ReminderUpdateRequest(null, null, null, date, null));
+
+            assertThat(updated.dueDate()).isEqualTo(date);
+            assertThat(updated.dueTime()).isNull();
+        }
+
+        @Test
+        void 마감일과_시간을_동시에_설정하면_모두_저장된다() {
+            ReminderResponse created = reminderService.create(new ReminderCreateRequest(savedListId, "리마인더", null));
+            LocalDate date = LocalDate.of(2026, 7, 1);
+            LocalTime time = LocalTime.of(9, 0);
+
+            ReminderResponse updated = reminderService.update(created.id(),
+                    new ReminderUpdateRequest(null, null, null, date, time));
+
+            assertThat(updated.dueDate()).isEqualTo(date);
+            assertThat(updated.dueTime()).isEqualTo(time);
+        }
+
+        @Test
+        void 우선순위_4단계를_각각_저장하고_조회할_수_있다() {
+            for (Priority priority : Priority.values()) {
+                ReminderResponse created = reminderService.create(new ReminderCreateRequest(savedListId, "리마인더", null));
+                ReminderResponse updated = reminderService.update(created.id(),
+                        new ReminderUpdateRequest(null, null, priority, null, null));
+                assertThat(updated.priority()).isEqualTo(priority);
+            }
+        }
+    }
+
+    @Nested
+    class move {
+
+        @Test
+        void 다른_목록으로_이동하면_listId가_변경된다() {
+            ReminderList targetList = reminderListRepository.save(
+                    ReminderList.create("대상 목록", ListColor.RED, null)
+            );
+            ReminderResponse created = reminderService.create(new ReminderCreateRequest(savedListId, "리마인더", null));
+
+            ReminderResponse moved = reminderService.move(created.id(), new ReminderMoveRequest(targetList.getId()));
+
+            assertThat(moved.listId()).isEqualTo(targetList.getId());
+        }
+
+        @Test
+        void 이동한_리마인더는_새_목록에서_조회된다() {
+            ReminderList targetList = reminderListRepository.save(
+                    ReminderList.create("대상 목록", ListColor.RED, null)
+            );
+            ReminderResponse created = reminderService.create(new ReminderCreateRequest(savedListId, "이동할 리마인더", null));
+            reminderService.move(created.id(), new ReminderMoveRequest(targetList.getId()));
+
+            ReminderGroupResponse targetResult = reminderService.findByListId(targetList.getId());
+            ReminderGroupResponse originalResult = reminderService.findByListId(savedListId);
+
+            assertThat(targetResult.incomplete()).hasSize(1);
+            assertThat(originalResult.incomplete()).isEmpty();
         }
     }
 

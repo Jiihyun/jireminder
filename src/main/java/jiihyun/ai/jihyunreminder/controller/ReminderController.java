@@ -2,6 +2,7 @@ package jiihyun.ai.jihyunreminder.controller;
 
 import jakarta.validation.Valid;
 import jiihyun.ai.jihyunreminder.dto.request.ReminderCreateRequest;
+import jiihyun.ai.jihyunreminder.dto.request.ReminderMoveRequest;
 import jiihyun.ai.jihyunreminder.dto.request.ReminderUpdateRequest;
 import jiihyun.ai.jihyunreminder.dto.response.ReminderGroupResponse;
 import jiihyun.ai.jihyunreminder.dto.response.ReminderResponse;
@@ -51,6 +52,13 @@ public class ReminderController {
     @PatchMapping("/{id}/flag")
     public ResponseEntity<ReminderResponse> toggleFlag(@PathVariable Long id) {
         return ResponseEntity.ok(reminderService.toggleFlag(id));
+    }
+
+    @PatchMapping("/{id}/move")
+    public ResponseEntity<ReminderResponse> move(
+            @PathVariable Long id,
+            @RequestBody ReminderMoveRequest request) {
+        return ResponseEntity.ok(reminderService.move(id, request));
     }
 
     @DeleteMapping("/{id}")

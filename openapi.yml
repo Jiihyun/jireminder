@@ -299,6 +299,41 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  /api/reminders/{id}/move:
+    patch:
+      tags:
+        - Reminder
+      summary: 리마인더 목록 이동
+      operationId: moveReminder
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReminderMoveRequest'
+            example:
+              listId: 2
+      responses:
+        '200':
+          description: 이동 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReminderResponse'
+        '404':
+          description: 리마인더 또는 목록 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
 components:
   schemas:
     ListColor:
@@ -376,6 +411,16 @@ components:
         - MEDIUM
         - HIGH
       example: NONE
+
+    ReminderMoveRequest:
+      type: object
+      required:
+        - listId
+      properties:
+        listId:
+          type: integer
+          format: int64
+          example: 2
 
     ReminderCreateRequest:
       type: object

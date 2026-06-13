@@ -126,28 +126,28 @@
 ## Phase 3 — BE: 리마인더 고급 API
 
 ### 도메인
-- [ ] `Priority` Enum 생성 (`NONE, LOW, MEDIUM, HIGH`)
-- [ ] `Reminder` 엔티티 필드 추가
-  - [ ] `priority` — `@Enumerated(EnumType.STRING)`, 기본값 `NONE`
-  - [ ] `dueDate` — `LocalDate`
-  - [ ] `dueTime` — `LocalTime`
+- [x] `Priority` Enum 생성 (`NONE, LOW, MEDIUM, HIGH`)
+- [x] `Reminder` 엔티티 필드 추가
+  - [x] `priority` — `@Enumerated(EnumType.STRING)`, 기본값 `NONE`
+  - [x] `dueDate` — `LocalDate`
+  - [x] `dueTime` — `LocalTime`
 
 ### DTO
-- [ ] `ReminderUpdateRequest`에 `priority`, `dueDate`, `dueTime` 추가
-- [ ] `ReminderResponse`에 `priority`, `dueDate`, `dueTime` 추가
-- [ ] `ReminderMoveRequest` 생성 (`listId`)
+- [x] `ReminderUpdateRequest`에 `priority`, `dueDate`, `dueTime` 추가
+- [x] `ReminderResponse`에 `priority`, `dueDate`, `dueTime` 추가
+- [x] `ReminderMoveRequest` 생성 (`listId`)
 
 ### Service
-- [ ] `ReminderService.update()` 확장 — `priority`, `dueDate`, `dueTime` 처리
-- [ ] `ReminderService.move(Long id, Long listId)` — 목록 이동
+- [x] `ReminderService.update()` 확장 — `priority`, `dueDate`, `dueTime` 처리
+- [x] `ReminderService.move(Long id, Long listId)` — 목록 이동
 
 ### Controller
-- [ ] `PATCH /api/reminders/{id}/move` 엔드포인트 추가
+- [x] `PATCH /api/reminders/{id}/move` 엔드포인트 추가
 
 ### 테스트
-- [ ] 마감일만 설정 / 마감일+시간 동시 설정
-- [ ] 우선순위 4단계 저장 및 조회
-- [ ] 목록 이동 후 새 목록에서 조회 확인
+- [x] 마감일만 설정 / 마감일+시간 동시 설정
+- [x] 우선순위 4단계 저장 및 조회
+- [x] 목록 이동 후 새 목록에서 조회 확인
 
 ---
 

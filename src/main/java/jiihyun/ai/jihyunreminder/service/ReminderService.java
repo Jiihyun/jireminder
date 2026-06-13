@@ -3,6 +3,7 @@ package jiihyun.ai.jihyunreminder.service;
 import jiihyun.ai.jihyunreminder.domain.Reminder;
 import jiihyun.ai.jihyunreminder.domain.ReminderList;
 import jiihyun.ai.jihyunreminder.dto.request.ReminderCreateRequest;
+import jiihyun.ai.jihyunreminder.dto.request.ReminderMoveRequest;
 import jiihyun.ai.jihyunreminder.dto.request.ReminderUpdateRequest;
 import jiihyun.ai.jihyunreminder.dto.response.ReminderGroupResponse;
 import jiihyun.ai.jihyunreminder.dto.response.ReminderResponse;
@@ -59,6 +60,15 @@ public class ReminderService {
     public ReminderResponse toggleFlag(Long id) {
         Reminder reminder = findById(id);
         reminder.toggleFlag();
+        return ReminderResponse.from(reminder);
+    }
+
+    @Transactional
+    public ReminderResponse move(Long id, ReminderMoveRequest request) {
+        Reminder reminder = findById(id);
+        ReminderList targetList = reminderListRepository.findById(request.listId())
+                .orElseThrow(() -> new NotFoundException("목록을 찾을 수 없습니다. id=" + request.listId()));
+        reminder.move(targetList);
         return ReminderResponse.from(reminder);
     }
 
