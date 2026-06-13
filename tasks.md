@@ -205,41 +205,41 @@
 ## Phase 5 — FE: 프로젝트 셋업 + 정적 레이아웃
 
 ### 프로젝트 초기화
-- [ ] `pnpm create next-app@latest frontend` 실행
-  - [ ] 옵션: TypeScript ✓, TailwindCSS ✓, App Router ✓, `@/*` alias ✓
-- [ ] 의존성 설치
-  - [ ] `pnpm add @tanstack/react-query zustand`
-  - [ ] `pnpm add -D @tanstack/react-query-devtools`
-- [ ] 불필요한 보일러플레이트 제거 (기본 페이지 내용 비우기)
+- [x] `pnpm create next-app@latest frontend` 실행
+  - [x] 옵션: TypeScript ✓, TailwindCSS ✓, App Router ✓, `@/*` alias ✓
+- [x] 의존성 설치
+  - [x] `pnpm add @tanstack/react-query zustand`
+  - [x] `pnpm add -D @tanstack/react-query-devtools`
+- [x] 불필요한 보일러플레이트 제거 (기본 페이지 내용 비우기)
 
 ### 디자인 시스템
-- [ ] `app/globals.css`에 Apple 시스템 색상 CSS 변수 정의
-  - [ ] `--bg-sidebar`, `--bg-main`, `--bg-detail`
-  - [ ] `--text-primary`, `--text-secondary`, `--separator`
-  - [ ] `--due-overdue`, `--due-today`
-  - [ ] 폰트: `-apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif`
-- [ ] `tailwind.config.ts`에 색상 변수 및 커스텀 애니메이션 등록
-  - [ ] `animate-slide-down`, `animate-fade-out` keyframe 정의
+- [x] `app/globals.css`에 Apple 시스템 색상 CSS 변수 정의
+  - [x] `--bg-sidebar`, `--bg-main`, `--bg-detail`
+  - [x] `--text-primary`, `--text-secondary`, `--separator`
+  - [x] `--due-overdue`, `--due-today`
+  - [x] 폰트: `-apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif`
+- [x] `globals.css @theme`에 색상 변수 및 커스텀 애니메이션 등록 (Tailwind v4 방식)
+  - [x] `animate-slide-down`, `animate-fade-out` keyframe 정의
 
 ### 타입 정의
-- [ ] `types/index.ts` 생성
-  - [ ] `ReminderList` 타입 (`id`, `name`, `color`, `icon`, `createdAt`)
-  - [ ] `Reminder` 타입 (전체 필드)
-  - [ ] `SubTask` 타입
-  - [ ] `SmartCounts` 타입
-  - [ ] `Priority`, `ListColor` 타입(Enum)
-  - [ ] `SmartListId` 유니온 타입 (`'today' | 'scheduled' | 'all' | 'flagged' | 'completed'`)
+- [x] `types/index.ts` 생성
+  - [x] `ReminderList` 타입 (`id`, `name`, `color`, `icon`, `createdAt`)
+  - [x] `Reminder` 타입 (전체 필드)
+  - [x] `SubTask` 타입
+  - [x] `SmartCounts` 타입
+  - [x] `Priority`, `ListColor` 타입(Enum)
+  - [x] `SmartListId` 유니온 타입 (`'today' | 'scheduled' | 'all' | 'flagged' | 'completed'`)
 
 ### 정적 레이아웃
-- [ ] `app/layout.tsx` — 사이드바(260px, 고정) + 메인(flex-1) 2컬럼 구조
-- [ ] `app/page.tsx` — `/list/all` 리다이렉트
-- [ ] `components/sidebar/SmartListCard.tsx` — 색상 카드, 아이콘, 숫자 표시 (더미)
-- [ ] `components/sidebar/Sidebar.tsx`
-  - [ ] 스마트 목록 카드 2열 그리드 (오늘·예정 / 전체·플래그됨)
-  - [ ] 완료됨 카드 — 전체 너비 단독 배치
-  - [ ] "나의 목록" 섹션 (더미 데이터)
-  - [ ] `+ 목록 추가` 버튼 (비활성)
-- [ ] `.env.local` 파일 생성 (`NEXT_PUBLIC_API_URL=http://localhost:8080`)
+- [x] `app/layout.tsx` — 사이드바(260px, 고정) + 메인(flex-1) 2컬럼 구조
+- [x] `app/page.tsx` — `/list/all` 리다이렉트
+- [x] `components/sidebar/SmartListCard.tsx` — 색상 카드, 아이콘, 숫자 표시 (더미)
+- [x] `components/sidebar/Sidebar.tsx`
+  - [x] 스마트 목록 카드 2열 그리드 (오늘·예정 / 전체·플래그됨)
+  - [x] 완료됨 카드 — 전체 너비 단독 배치
+  - [x] "나의 목록" 섹션 (더미 데이터)
+  - [x] `+ 목록 추가` 버튼 (비활성)
+- [x] `.env.local` 파일 생성 (`NEXT_PUBLIC_API_URL=http://localhost:8080`)
 
 ---
 

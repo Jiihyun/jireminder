@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+/* Apple 시스템 색상 변수 */
+:root {
+  --bg-sidebar: #f2f2f7;
+  --bg-main: #ffffff;
+  --bg-detail: #f2f2f7;
+
+  --text-primary: #1c1c1e;
+  --text-secondary: #8e8e93;
+  --separator: rgba(60, 60, 67, 0.12);
+
+  --due-overdue: #ff3b30;
+  --due-today: #007aff;
+
+  --color-today: #007aff;
+  --color-scheduled: #ff3b30;
+  --color-all: #1c1c1e;
+  --color-flagged: #ff9500;
+  --color-completed: #8e8e93;
+}
+
+/* Tailwind v4 테마 확장 */
+@theme inline {
+  --color-sidebar: var(--bg-sidebar);
+  --color-main: var(--bg-main);
+  --color-detail: var(--bg-detail);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-separator: var(--separator);
+
+  --color-due-overdue: var(--due-overdue);
+  --color-due-today: var(--due-today);
+
+  /* 커스텀 애니메이션 */
+  --animate-slide-down: slide-down 200ms ease-out;
+  --animate-fade-out: fade-out 300ms ease-in forwards;
+}
+
+/* 애니메이션 keyframes */
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 500px;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+    max-height: 80px;
+    margin-bottom: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    max-height: 0;
+    margin-bottom: -8px;
+  }
+}
+
+/* 전역 기본 스타일 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg-main);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+html,
+body {
+  height: 100%;
+}
