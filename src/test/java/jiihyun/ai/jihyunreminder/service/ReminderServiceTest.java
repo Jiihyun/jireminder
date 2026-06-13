@@ -37,6 +37,7 @@ class ReminderServiceTest {
 
     @BeforeEach
     void setUp() {
+        reminderListRepository.deleteAll();
         ReminderList list = reminderListRepository.save(
                 ReminderList.create("테스트 목록", ListColor.BLUE, null)
         );

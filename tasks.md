@@ -154,51 +154,51 @@
 ## Phase 4 — BE: 스마트 목록·하위 태스크·검색 API
 
 ### 스마트 목록 쿼리
-- [ ] `ReminderRepository`에 스마트 목록 메서드 추가
-  - [ ] `findByDueDateAndCompletedFalse(LocalDate today)` — 오늘 마감
-  - [ ] `findByDueDateNotNullAndCompletedFalseOrderByDueDateAsc()` — 예정
-  - [ ] `findByCompletedFalse()` — 전체 미완료
-  - [ ] `findByFlaggedTrueAndCompletedFalse()` — 플래그됨
-  - [ ] `findByCompletedTrueOrderByCompletedAtDesc()` — 완료됨
-  - [ ] `@Query` JPQL 검색 메서드 (title, memo 대소문자 무시)
-- [ ] `ReminderController`에 `smart`, `q` 쿼리 파라미터 분기 처리 추가
-- [ ] `SmartCountResponse` DTO 생성 (`today`, `scheduled`, `all`, `flagged`, `completed`)
-- [ ] `SmartCountService` 생성 — 각 스마트 목록 카운트 일괄 조회
-- [ ] `SmartCountController` 생성 (`GET /api/smart-counts`)
+- [x] `ReminderRepository`에 스마트 목록 메서드 추가
+  - [x] `findByDueDateAndCompletedFalse(LocalDate today)` — 오늘 마감
+  - [x] `findByDueDateNotNullAndCompletedFalseOrderByDueDateAsc()` — 예정
+  - [x] `findByCompletedFalse()` — 전체 미완료
+  - [x] `findByFlaggedTrueAndCompletedFalse()` — 플래그됨
+  - [x] `findByCompletedTrueOrderByCompletedAtDesc()` — 완료됨
+  - [x] `@Query` JPQL 검색 메서드 (title, memo 대소문자 무시)
+- [x] `ReminderController`에 `smart`, `q` 쿼리 파라미터 분기 처리 추가
+- [x] `SmartCountResponse` DTO 생성 (`today`, `scheduled`, `all`, `flagged`, `completed`)
+- [x] `SmartCountService` 생성 — 각 스마트 목록 카운트 일괄 조회
+- [x] `SmartCountController` 생성 (`GET /api/smart-counts`)
 
 ### 하위 태스크
-- [ ] `SubTask` 엔티티 생성
-  - [ ] `id`, `title`, `completed`, `createdAt`, `updatedAt`
-  - [ ] `reminder` — `@ManyToOne(fetch = LAZY)`, `@JoinColumn(name = "reminder_id")`
-  - [ ] Lombok: `@Getter @Builder @NoArgsConstructor @AllArgsConstructor`
-- [ ] `Reminder` 엔티티에 `@OneToMany(cascade = ALL, orphanRemoval = true)` SubTask 추가
-- [ ] `SubTaskRepository` 생성 (`JpaRepository<SubTask, Long>`)
-- [ ] `SubTaskRequest` DTO (`title`, `@NotBlank`)
-- [ ] `SubTaskResponse` DTO (`id`, `reminderId`, `title`, `completed`, `createdAt`)
-  - [ ] `from(SubTask)` 팩토리 메서드
-- [ ] `ReminderResponse`에 `subTasks: List<SubTaskResponse>` 포함
-- [ ] `SubTaskService` 생성
-  - [ ] `create(Long reminderId, SubTaskRequest)` — 생성
-  - [ ] `update(Long id, SubTaskRequest)` — 제목 수정
-  - [ ] `toggleComplete(Long id)` — 완료 토글
-  - [ ] `delete(Long id)` — 삭제
-- [ ] `SubTaskController` 생성
-  - [ ] `POST /api/reminders/{id}/subtasks` → `create()` (`201`)
-  - [ ] `PATCH /api/subtasks/{id}` → `update()`
-  - [ ] `PATCH /api/subtasks/{id}/complete` → `toggleComplete()`
-  - [ ] `DELETE /api/subtasks/{id}` → `delete()` (`204`)
+- [x] `SubTask` 엔티티 생성
+  - [x] `id`, `title`, `completed`, `createdAt`, `updatedAt`
+  - [x] `reminder` — `@ManyToOne(fetch = LAZY)`, `@JoinColumn(name = "reminder_id")`
+  - [x] Lombok: `@Getter @NoArgsConstructor(PROTECTED)`
+- [x] `Reminder` 엔티티에 `@OneToMany(cascade = ALL, orphanRemoval = true)` SubTask 추가
+- [x] `SubTaskRepository` 생성 (`JpaRepository<SubTask, Long>`)
+- [x] `SubTaskRequest` DTO (`title`, `@NotBlank`)
+- [x] `SubTaskResponse` DTO (`id`, `reminderId`, `title`, `completed`, `createdAt`)
+  - [x] `from(SubTask)` 팩토리 메서드
+- [x] `ReminderResponse`에 `subTasks: List<SubTaskResponse>` 포함
+- [x] `SubTaskService` 생성
+  - [x] `create(Long reminderId, SubTaskRequest)` — 생성
+  - [x] `update(Long id, SubTaskRequest)` — 제목 수정
+  - [x] `toggleComplete(Long id)` — 완료 토글
+  - [x] `delete(Long id)` — 삭제
+- [x] `SubTaskController` 생성
+  - [x] `POST /api/reminders/{id}/subtasks` → `create()` (`201`)
+  - [x] `PATCH /api/subtasks/{id}` → `update()`
+  - [x] `PATCH /api/subtasks/{id}/complete` → `toggleComplete()`
+  - [x] `DELETE /api/subtasks/{id}` → `delete()` (`204`)
 
 ### CORS 설정
-- [ ] `CorsConfig` 클래스 생성 (`WebMvcConfigurer`)
-  - [ ] `/api/**` 경로에 `http://localhost:3000` 허용
-  - [ ] 허용 메서드: `GET, POST, PATCH, DELETE`
+- [x] `CorsConfig` 클래스 생성 (`WebMvcConfigurer`)
+  - [x] `/api/**` 경로에 `http://localhost:3000` 허용
+  - [x] 허용 메서드: `GET, POST, PATCH, DELETE`
 
 ### 테스트
-- [ ] 5가지 스마트 목록 쿼리 결과 검증
-- [ ] `GET /api/smart-counts` 응답값 검증
-- [ ] 하위 태스크 CRUD 전체 동작 검증
-- [ ] 검색 대소문자 무시 동작 검증
-- [ ] Reminder 응답에 SubTask 목록 포함 확인
+- [x] 5가지 스마트 목록 쿼리 결과 검증
+- [x] `GET /api/smart-counts` 응답값 검증
+- [x] 하위 태스크 CRUD 전체 동작 검증
+- [x] 검색 대소문자 무시 동작 검증
+- [x] Reminder 응답에 SubTask 목록 포함 확인
 
 ---
 
@@ -417,12 +417,12 @@
 
 | Phase | 설명 | 진행 |
 |-------|------|------|
-| **Phase 1** | BE: 목록 CRUD API | ⬜ 0 / 20 |
-| **Phase 2** | BE: 리마인더 기본 API | ⬜ 0 / 22 |
-| **Phase 3** | BE: 리마인더 고급 API | ⬜ 0 / 10 |
-| **Phase 4** | BE: 스마트 목록·하위 태스크·검색 | ⬜ 0 / 24 |
-| **Phase 5** | FE: 프로젝트 셋업 + 정적 레이아웃 | ⬜ 0 / 18 |
-| **Phase 6** | FE: 사이드바 API 연동 | ⬜ 0 / 17 |
-| **Phase 7** | FE: 리마인더 기본 | ⬜ 0 / 20 |
-| **Phase 8** | FE: 상세 패널·하위 태스크·스마트 목록 | ⬜ 0 / 19 |
-| **Phase 9** | FE: 검색·키보드·낙관적 업데이트·애니메이션 | ⬜ 0 / 22 |
+| **Phase 1** | BE: 목록 CRUD API | ✅ 완료 |
+| **Phase 2** | BE: 리마인더 기본 API | ✅ 완료 |
+| **Phase 3** | BE: 리마인더 고급 API | ✅ 완료 |
+| **Phase 4** | BE: 스마트 목록·하위 태스크·검색 | ✅ 완료 |
+| **Phase 5** | FE: 프로젝트 셋업 + 정적 레이아웃 | ⬜ 미착수 |
+| **Phase 6** | FE: 사이드바 API 연동 | ⬜ 미착수 |
+| **Phase 7** | FE: 리마인더 기본 | ⬜ 미착수 |
+| **Phase 8** | FE: 상세 패널·하위 태스크·스마트 목록 | ⬜ 미착수 |
+| **Phase 9** | FE: 검색·키보드·낙관적 업데이트·애니메이션 | ⬜ 미착수 |

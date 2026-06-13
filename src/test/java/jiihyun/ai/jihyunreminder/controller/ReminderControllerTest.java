@@ -269,3 +269,4 @@ class ReminderControllerTest {
                 .statusCode(HttpStatus.OK.value());
     }
 }
+

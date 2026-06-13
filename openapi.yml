@@ -13,6 +13,8 @@ tags:
     description: 리마인더 목록 관리
   - name: Reminder
     description: 리마인더 관리
+  - name: SubTask
+    description: 하위 태스크 관리
 
 paths:
   /api/lists:
@@ -30,12 +32,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ReminderListResponse'
-              example:
-                - id: 1
-                  name: 개인
-                  color: BLUE
-                  icon: 🏠
-                  createdAt: 2026-06-12T00:00:00
 
     post:
       tags:
@@ -60,13 +56,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ReminderListResponse'
         '400':
-          description: 유효하지 않은 요청 (name 누락 등)
+          description: 유효하지 않은 요청
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example:
-                message: 목록 이름은 필수입니다
 
   /api/lists/{id}:
     patch:
@@ -81,17 +75,12 @@ paths:
           schema:
             type: integer
             format: int64
-          example: 1
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ReminderListUpdateRequest'
-            example:
-              name: 업무
-              color: RED
-              icon: 💼
       responses:
         '200':
           description: 수정 성공
@@ -105,8 +94,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example:
-                message: 목록을 찾을 수 없습니다. id=1
 
     delete:
       tags:
@@ -120,7 +107,6 @@ paths:
           schema:
             type: integer
             format: int64
-          example: 1
       responses:
         '204':
           description: 삭제 성공
@@ -130,23 +116,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example:
-                message: 목록을 찾을 수 없습니다. id=1
 
   /api/reminders:
     get:
       tags:
         - Reminder
-      summary: 목록별 리마인더 조회
-      operationId: getRemindersByListId
+      summary: 리마인더 조회 (목록별 / 스마트 목록 / 검색)
+      operationId: getReminders
       parameters:
         - name: listId
           in: query
-          required: true
+          required: false
           schema:
             type: integer
             format: int64
-          example: 1
+          description: 목록 ID로 조회
+        - name: smart
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [today, scheduled, all, flagged, completed]
+          description: 스마트 목록 유형
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+          description: 검색어 (title/memo 대소문자 무시)
       responses:
         '200':
           description: 조회 성공 (미완료/완료 분리)
@@ -166,10 +163,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ReminderCreateRequest'
-            example:
-              listId: 1
-              title: 장보기
-              memo: 우유, 달걀
       responses:
         '201':
           description: 생성 성공
@@ -318,8 +311,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ReminderMoveRequest'
-            example:
-              listId: 2
       responses:
         '200':
           description: 이동 성공
@@ -329,6 +320,134 @@ paths:
                 $ref: '#/components/schemas/ReminderResponse'
         '404':
           description: 리마인더 또는 목록 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/smart-counts:
+    get:
+      tags:
+        - Reminder
+      summary: 스마트 목록 카운트 일괄 조회
+      operationId: getSmartCounts
+      responses:
+        '200':
+          description: 카운트 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartCountResponse'
+
+  /api/reminders/{reminderId}/subtasks:
+    post:
+      tags:
+        - SubTask
+      summary: 하위 태스크 생성
+      operationId: createSubTask
+      parameters:
+        - name: reminderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubTaskRequest'
+      responses:
+        '201':
+          description: 생성 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubTaskResponse'
+        '404':
+          description: 리마인더 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/subtasks/{id}:
+    patch:
+      tags:
+        - SubTask
+      summary: 하위 태스크 제목 수정
+      operationId: updateSubTask
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubTaskRequest'
+      responses:
+        '200':
+          description: 수정 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubTaskResponse'
+        '404':
+          description: 하위 태스크 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - SubTask
+      summary: 하위 태스크 삭제
+      operationId: deleteSubTask
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: 삭제 성공
+        '404':
+          description: 하위 태스크 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/subtasks/{id}/complete:
+    patch:
+      tags:
+        - SubTask
+      summary: 하위 태스크 완료 토글
+      operationId: toggleSubTaskComplete
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 토글 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubTaskResponse'
+        '404':
+          description: 하위 태스크 없음
           content:
             application/json:
               schema:
@@ -351,6 +470,15 @@ components:
         - BROWN
       example: BLUE
 
+    Priority:
+      type: string
+      enum:
+        - NONE
+        - LOW
+        - MEDIUM
+        - HIGH
+      example: NONE
+
     ReminderListRequest:
       type: object
       required:
@@ -359,13 +487,11 @@ components:
         name:
           type: string
           maxLength: 50
-          description: 목록 이름 (필수)
           example: 개인
         color:
           $ref: '#/components/schemas/ListColor'
         icon:
           type: string
-          description: 이모지 아이콘 (선택)
           example: 🏠
 
     ReminderListUpdateRequest:
@@ -374,13 +500,11 @@ components:
         name:
           type: string
           maxLength: 50
-          description: 목록 이름 (선택 - null이면 기존 값 유지)
           example: 업무
         color:
           $ref: '#/components/schemas/ListColor'
         icon:
           type: string
-          description: 이모지 아이콘 (선택 - null이면 기존 값 유지)
           example: 💼
 
     ReminderListResponse:
@@ -401,16 +525,6 @@ components:
         createdAt:
           type: string
           format: date-time
-          example: 2026-06-12T00:00:00
-
-    Priority:
-      type: string
-      enum:
-        - NONE
-        - LOW
-        - MEDIUM
-        - HIGH
-      example: NONE
 
     ReminderMoveRequest:
       type: object
@@ -456,10 +570,22 @@ components:
           type: string
           format: date
           example: 2026-07-01
+          nullable: true
         dueTime:
           type: string
           format: time
-          example: 09:00:00
+          example: "09:00:00"
+          nullable: true
+
+    SubTaskRequest:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          maxLength: 200
+          example: 우유 사기
 
     SubTaskResponse:
       type: object
@@ -538,6 +664,30 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ReminderResponse'
+
+    SmartCountResponse:
+      type: object
+      properties:
+        today:
+          type: integer
+          format: int64
+          example: 3
+        scheduled:
+          type: integer
+          format: int64
+          example: 10
+        all:
+          type: integer
+          format: int64
+          example: 25
+        flagged:
+          type: integer
+          format: int64
+          example: 2
+        completed:
+          type: integer
+          format: int64
+          example: 15
 
     ErrorResponse:
       type: object

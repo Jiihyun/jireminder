@@ -28,8 +28,20 @@ public class ReminderController {
     private final ReminderService reminderService;
 
     @GetMapping
-    public ResponseEntity<ReminderGroupResponse> findByListId(@RequestParam Long listId) {
-        return ResponseEntity.ok(reminderService.findByListId(listId));
+    public ResponseEntity<ReminderGroupResponse> find(
+            @RequestParam(required = false) Long listId,
+            @RequestParam(required = false) String smart,
+            @RequestParam(required = false) String q) {
+        if (listId != null) {
+            return ResponseEntity.ok(reminderService.findByListId(listId));
+        }
+        if (smart != null) {
+            return ResponseEntity.ok(reminderService.findBySmart(smart));
+        }
+        if (q != null) {
+            return ResponseEntity.ok(reminderService.search(q));
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @PostMapping

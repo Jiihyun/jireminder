@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -31,6 +32,41 @@ public class ReminderService {
         List<ReminderResponse> completed = reminderRepository
                 .findByReminderListIdAndCompletedTrueOrderByCompletedAtDesc(listId)
                 .stream().map(ReminderResponse::from).toList();
+        return new ReminderGroupResponse(incomplete, completed);
+    }
+
+    public ReminderGroupResponse findBySmart(String smart) {
+        List<Reminder> results = switch (smart) {
+            case "today" -> reminderRepository.findByDueDateAndCompletedFalse(LocalDate.now());
+            case "scheduled" -> reminderRepository.findByDueDateNotNullAndCompletedFalseOrderByDueDateAsc();
+            case "all" -> reminderRepository.findByCompletedFalse();
+            case "flagged" -> reminderRepository.findByFlaggedTrueAndCompletedFalse();
+            case "completed" -> reminderRepository.findByCompletedTrueOrderByCompletedAtDesc();
+            default -> throw new IllegalArgumentException("알 수 없는 스마트 목록 유형: " + smart);
+        };
+
+        if ("completed".equals(smart)) {
+            return new ReminderGroupResponse(
+                    List.of(),
+                    results.stream().map(ReminderResponse::from).toList()
+            );
+        }
+        return new ReminderGroupResponse(
+                results.stream().map(ReminderResponse::from).toList(),
+                List.of()
+        );
+    }
+
+    public ReminderGroupResponse search(String q) {
+        List<Reminder> results = reminderRepository.searchByTitleOrMemo(q);
+        List<ReminderResponse> incomplete = results.stream()
+                .filter(r -> !r.isCompleted())
+                .map(ReminderResponse::from)
+                .toList();
+        List<ReminderResponse> completed = results.stream()
+                .filter(Reminder::isCompleted)
+                .map(ReminderResponse::from)
+                .toList();
         return new ReminderGroupResponse(incomplete, completed);
     }
 

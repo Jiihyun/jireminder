@@ -4,6 +4,8 @@ import jiihyun.ai.jihyunreminder.domain.ListColor;
 import jiihyun.ai.jihyunreminder.dto.request.ReminderListRequest;
 import jiihyun.ai.jihyunreminder.dto.response.ReminderListResponse;
 import jiihyun.ai.jihyunreminder.exception.NotFoundException;
+import jiihyun.ai.jihyunreminder.repository.ReminderListRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,14 @@ class ReminderListServiceTest {
 
     @Autowired
     private ReminderListService reminderListService;
+
+    @Autowired
+    private ReminderListRepository reminderListRepository;
+
+    @BeforeEach
+    void setUp() {
+        reminderListRepository.deleteAll();
+    }
 
     @Nested
     class findAll {
