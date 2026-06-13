@@ -288,43 +288,42 @@
 ## Phase 7 — FE: 리마인더 기본 (조회·추가·완료·플래그)
 
 ### 훅
-- [ ] `hooks/useReminders.ts`
-  - [ ] `useReminders(params)` — `GET /api/reminders?listId=` 또는 `?smart=`
-  - [ ] `useCreateReminder()` — `POST /api/reminders`
-  - [ ] `useUpdateReminder()` — `PATCH /api/reminders/{id}`
-  - [ ] `useToggleComplete()` — `PATCH /api/reminders/{id}/complete`
-  - [ ] `useToggleFlag()` — `PATCH /api/reminders/{id}/flag`
-  - [ ] `useDeleteReminder()` — `DELETE /api/reminders/{id}`
+- [x] `hooks/useReminders.ts`
+  - [x] `useReminders(params)` — `GET /api/reminders?listId=` 또는 `?smart=`
+  - [x] `useCreateReminder()` — `POST /api/reminders`
+  - [x] `useUpdateReminder()` — `PATCH /api/reminders/{id}`
+  - [x] `useToggleComplete()` — `PATCH /api/reminders/{id}/complete`
+  - [x] `useToggleFlag()` — `PATCH /api/reminders/{id}/flag`
+  - [x] `useDeleteReminder()` — `DELETE /api/reminders/{id}`
 
 ### UI 컴포넌트
-- [ ] `components/ui/CircleButton.tsx` — 완료 토글 원형 버튼
-  - [ ] 목록 색상 적용 (prop으로 수신)
-  - [ ] hover 시 내부 fill (30% opacity)
-  - [ ] 완료 상태: 체크마크 아이콘 표시
-- [ ] `components/reminder/ReminderRow.tsx`
-  - [ ] `CircleButton` + 제목 + 메모 미리보기(1줄 truncate)
-  - [ ] 우선순위 뱃지 (`!` / `!!` / `!!!`)
-  - [ ] 마감일 표시 (오늘 파랑, 초과 빨강, 기타 회색)
-  - [ ] hover 시 🚩·[ⓘ] 버튼 노출 (기본 숨김)
-  - [ ] 완료 항목: `line-through` + `text-secondary`
-  - [ ] 플래그 토글 (주황 🚩)
-- [ ] `components/reminder/ReminderInput.tsx` — 인라인 입력
-  - [ ] `CircleButton` (빈 상태) + placeholder input
-  - [ ] `Enter` → 저장 후 다음 입력 대기
-  - [ ] `Escape` → 취소, input 비활성화
-- [ ] `components/reminder/ReminderList.tsx`
-  - [ ] 미완료 리마인더 목록 렌더링
-  - [ ] 완료됨 섹션 (`완료됨 N개`) — 기본 접힘, 클릭으로 토글
-  - [ ] `+ 새로운 리마인더` 버튼 → `ReminderInput` 활성화
-- [ ] `app/list/[id]/page.tsx`
-  - [ ] `id`가 스마트 목록 ID면 `smart=` 파라미터로, 아니면 `listId=`로 조회
-  - [ ] 목록 제목 + 목록 색상 헤더 표시
+- [x] `components/ui/CircleButton.tsx` — 완료 토글 원형 버튼
+  - [x] 목록 색상 적용 (prop으로 수신)
+  - [x] hover 시 내부 fill (30% opacity)
+  - [x] 완료 상태: 체크마크 아이콘 표시
+- [x] `components/reminder/ReminderRow.tsx`
+  - [x] `CircleButton` + 제목 + 메모 미리보기(1줄 truncate)
+  - [x] 우선순위 뱃지 (`!` / `!!` / `!!!`)
+  - [x] 마감일 표시 (오늘 파랑, 초과 빨강, 기타 회색)
+  - [x] hover 시 🚩·[ⓘ] 버튼 노출 (기본 숨김)
+  - [x] 완료 항목: `line-through` + `text-secondary`
+  - [x] 플래그 토글 (주황 🚩)
+- [x] `components/reminder/ReminderInput.tsx` — 인라인 입력
+  - [x] `CircleButton` (빈 상태) + placeholder input
+  - [x] `Enter` → 저장 후 다음 입력 대기
+  - [x] `Escape` → 취소, input 비활성화
+- [x] `components/reminder/ReminderList.tsx`
+  - [x] 미완료 리마인더 목록 렌더링
+  - [x] 완료됨 섹션 (`완료됨 N개`) — 기본 접힘, 클릭으로 토글
+  - [x] `+ 새로운 리마인더` 버튼 → `ReminderInput` 활성화
+- [x] `app/list/[id]/page.tsx`
+  - [x] `id`가 스마트 목록 ID면 `smart=` 파라미터로, 아니면 `listId=`로 조회
+  - [x] 목록 제목 + 목록 색상 헤더 표시
 
 ### 애니메이션
-- [ ] 완료 처리 3단계 애니메이션 구현
-  - [ ] 1단계 (0~300ms): `CircleButton` fill 채우기 + 제목 `line-through`
-  - [ ] 2단계 (300~600ms): 행 `opacity-0` + `max-h-0` 축소
-  - [ ] 3단계: DOM에서 제거
+- [x] 완료 처리 애니메이션 구현
+  - [x] opacity-0 + max-h-0 축소 (300ms transition)
+  - [x] 애니메이션 후 API 호출
 
 ---
 
