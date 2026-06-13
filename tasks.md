@@ -330,37 +330,37 @@
 ## Phase 8 — FE: 상세 패널·하위 태스크·스마트 목록
 
 ### UI 컴포넌트
-- [ ] `components/ui/Toggle.tsx` — iOS 스타일 토글 스위치
-- [ ] `components/reminder/DetailPanel.tsx`
-  - [ ] 우측 슬라이드-인 (`translate-x-full` → `translate-x-0`, 280ms ease)
-  - [ ] 제목 `input` (편집 즉시 debounce PATCH)
-  - [ ] 메모 `textarea` (자동 높이 조절)
-  - [ ] 날짜 `Toggle` + 날짜 피커 (on 시 노출)
-  - [ ] 시간 `Toggle` + 시간 피커 (날짜 설정 후 활성화)
-  - [ ] 플래그 `Toggle`
-  - [ ] 우선순위 드롭다운 (`없음 / 낮음 / 보통 / 높음`)
-  - [ ] 목록 이동 드롭다운 (전체 목록 표시)
-  - [ ] 하위 태스크 섹션 (목록 + 인라인 추가 입력)
-  - [ ] 닫기 버튼 (`Escape` 연동)
+- [x] `components/ui/Toggle.tsx` — iOS 스타일 토글 스위치
+- [x] `components/reminder/DetailPanel.tsx`
+  - [x] 우측 슬라이드-인 (`translate-x-full` → `translate-x-0`, 280ms ease)
+  - [x] 제목 `input` (편집 즉시 debounce PATCH)
+  - [x] 메모 `textarea` (자동 높이 조절)
+  - [x] 날짜 `Toggle` + 날짜 피커 (on 시 노출)
+  - [x] 시간 `Toggle` + 시간 피커 (날짜 설정 후 활성화)
+  - [x] 플래그 `Toggle`
+  - [x] 우선순위 드롭다운 (`없음 / 낮음 / 보통 / 높음`)
+  - [x] 목록 이동 드롭다운 (전체 목록 표시)
+  - [x] 하위 태스크 섹션 (목록 + 인라인 추가 입력)
+  - [x] 닫기 버튼 (`Escape` 연동)
 
 ### 하위 태스크
-- [ ] `hooks/useSubTasks.ts`
-  - [ ] `useCreateSubTask()` — `POST /api/reminders/{id}/subtasks`
-  - [ ] `useUpdateSubTask()` — `PATCH /api/subtasks/{id}`
-  - [ ] `useToggleSubTaskComplete()` — `PATCH /api/subtasks/{id}/complete`
-  - [ ] `useDeleteSubTask()` — `DELETE /api/subtasks/{id}`
-- [ ] `components/reminder/SubTaskRow.tsx`
-  - [ ] `pl-8` 들여쓰기, 18px 원형 버튼
-  - [ ] 완료 시 `line-through` + `text-secondary`
-  - [ ] hover 시 삭제 버튼 노출
-- [ ] `ReminderInput.tsx`에 `Tab` 키 → 하위 태스크 변환 처리
+- [x] `hooks/useSubTasks.ts`
+  - [x] `useCreateSubTask()` — `POST /api/reminders/{id}/subtasks`
+  - [x] `useUpdateSubTask()` — `PATCH /api/subtasks/{id}`
+  - [x] `useToggleSubTaskComplete()` — `PATCH /api/subtasks/{id}/complete`
+  - [x] `useDeleteSubTask()` — `DELETE /api/subtasks/{id}`
+- [x] `components/reminder/SubTaskRow.tsx`
+  - [x] `pl-8` 들여쓰기, 18px 원형 버튼
+  - [x] 완료 시 `line-through` + `text-secondary`
+  - [x] hover 시 삭제 버튼 노출
+- [x] `ReminderInput.tsx`에 `Tab` 키 → 하위 태스크 변환 처리
 
 ### 스마트 목록 뷰
-- [ ] `smart=today` — 단일 목록 (날짜 그룹 없음)
-- [ ] `smart=scheduled` — 날짜별 섹션 그룹핑
-  - [ ] 그룹: "오늘", "내일", "이번 주", "다음 주", "이후"
-- [ ] `smart=all`, `flagged`, `completed` — 목록 이름 서브라벨 표시
-- [ ] `Zustand` `detailReminderId` 연동 — `[ⓘ]` 클릭 시 상세 패널 오픈
+- [x] `smart=today` — 단일 목록 (날짜 그룹 없음)
+- [x] `smart=scheduled` — 날짜별 섹션 그룹핑
+  - [x] 그룹: "오늘", "내일", "이번 주", "다음 주", "이후"
+- [x] `smart=all`, `flagged`, `completed` — 목록 이름 서브라벨 표시
+- [x] `Zustand` `detailReminderId` 연동 — `[ⓘ]` 클릭 시 상세 패널 오픈
 
 ---
 
@@ -420,8 +420,8 @@
 | **Phase 2** | BE: 리마인더 기본 API | ✅ 완료 |
 | **Phase 3** | BE: 리마인더 고급 API | ✅ 완료 |
 | **Phase 4** | BE: 스마트 목록·하위 태스크·검색 | ✅ 완료 |
-| **Phase 5** | FE: 프로젝트 셋업 + 정적 레이아웃 | ⬜ 미착수 |
-| **Phase 6** | FE: 사이드바 API 연동 | ⬜ 미착수 |
-| **Phase 7** | FE: 리마인더 기본 | ⬜ 미착수 |
-| **Phase 8** | FE: 상세 패널·하위 태스크·스마트 목록 | ⬜ 미착수 |
+| **Phase 5** | FE: 프로젝트 셋업 + 정적 레이아웃 | ✅ 완료 |
+| **Phase 6** | FE: 사이드바 API 연동 | ✅ 완료 |
+| **Phase 7** | FE: 리마인더 기본 | ✅ 완료 |
+| **Phase 8** | FE: 상세 패널·하위 태스크·스마트 목록 | ✅ 완료 |
 | **Phase 9** | FE: 검색·키보드·낙관적 업데이트·애니메이션 | ⬜ 미착수 |

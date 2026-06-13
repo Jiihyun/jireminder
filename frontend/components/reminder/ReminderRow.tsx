@@ -115,7 +115,7 @@ export default function ReminderRow({ reminder, color }: ReminderRowProps) {
         {/* 상세 패널 열기 */}
         <button
           type="button"
-          onClick={() => openDetail(reminder.id)}
+          onClick={() => openDetail(reminder.id, reminder.listId)}
           className="text-xs px-1.5 py-0.5 rounded border transition-colors hover:bg-black/5"
           style={{
             color: 'var(--text-secondary)',
