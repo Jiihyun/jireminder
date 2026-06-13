@@ -1,6 +1,6 @@
 'use client';
 
-import { use } from 'react';
+import { use, useEffect } from 'react';
 import { useReminders } from '@/hooks/useReminders';
 import { useLists } from '@/hooks/useLists';
 import { useUIStore } from '@/store/uiStore';
@@ -63,16 +63,18 @@ function groupByDate(reminders: ReturnType<typeof Array.prototype.filter>) {
 
 export default function ListPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const { setSelectedList, searchQuery } = useUIStore();
+  // 셀렉터로 필요한 값만 구독 → 불필요한 재렌더 방지
+  const setSelectedList = useUIStore((s) => s.setSelectedList);
+  const searchQuery = useUIStore((s) => s.searchQuery);
   const { data: lists = [] } = useLists();
 
   const isSmart = SMART_LIST_IDS.includes(id as SmartListId);
   const numericId = isSmart ? null : Number(id);
 
-  // 사이드바 선택 상태 동기화
-  if (typeof window !== 'undefined') {
+  // 사이드바 선택 상태 동기화 — 렌더 중 호출 금지, useEffect 사용
+  useEffect(() => {
     setSelectedList(id);
-  }
+  }, [id, setSelectedList]);
 
   // 검색 중이면 searchQuery 우선
   const queryParams = searchQuery
